@@ -1,6 +1,7 @@
 import tmi, { ChatUserstate } from 'tmi.js'
 import config from './config'
 import { sanitizeInput } from './utilities'
+import * as commands from './commands'
 
 const client = tmi.Client(config)
 
@@ -16,7 +17,7 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
             console.log('No command given.')
             break
         case '!hello':
-            const response = `Hello to you too, ${userState["display-name"]}`
+            const response = commands.hello({ userState, command, message })
             client.say(channel, response)
             break
         default:
