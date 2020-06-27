@@ -10,9 +10,10 @@
 - [x] Refactor example for our needs
 - [x] Setup commands files
 - [x] hot reloading
-- [ ] Add functionality we want
-  - [ ] Show and Tell
-  - [ ] Office Hours
-- [ ] Figure out how to display show and tell and office hours requests in Streamlabs
-- [ ] Gcloud Setup
+- [x] Add functionality we want
+  - [x] Show and Tell
+  - [x] Office Hours
+- [x] Figure out how to display show and tell and office hours requests in Streamlabs
+- [ ] ~~Gcloud Setup~~
+- [ ] Store counters in non volatile area
 
