@@ -18,20 +18,19 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
     if (command === null || command in VALID_COMMANDS) {
         return null
     }
-
-    let response
+    
+    const commandArguments = { userState, command, message, channel }
     switch (command as ValidCommands) {
         case '!hello':
-            response = commands.hello({ userState, command, message })
+            commands.hello(client, commandArguments)
             break
         case '!showandtell':
-            response = commands.showAndTell({ userState, command, message })
+            commands.showAndTell(client, commandArguments)
             break
         case '!officehours':
-            response = commands.officeHours({ userState, command, message })
+            commands.officeHours(client, commandArguments)
             break
     }
-    client.say(channel, response)
 }
 
 const onConnectedHandler = (address: string, port: number) => {

@@ -9,7 +9,7 @@
 - [x] Setup a test library
 - [x] Refactor example for our needs
 - [x] Setup commands files
-- [ ] hot reloading
+- [x] hot reloading
 - [ ] Add functionality we want
   - [ ] Show and Tell
   - [ ] 
