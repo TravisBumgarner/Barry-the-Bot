@@ -1,6 +1,9 @@
 import tmi, { ChatUserstate } from 'tmi.js'
 import ejs from 'ejs'
 import fs from 'fs'
+import events from 'events'
+
+const eventEmitter = new events.EventEmitter()
 
 import config from './config'
 import { sanitizeInput } from './utilities'
@@ -8,6 +11,12 @@ import * as commands from './commands'
 
 let officeHoursRequests = 0
 let showAndTellRequests = 0
+
+const renderHTMLOverlay = () => {
+    const template = fs.readFileSync('./src/index.template.ejs', 'utf-8')
+    let html = ejs.render(template, { officeHoursRequests, showAndTellRequests });
+    fs.writeFileSync('./dist/index.html', html, 'utf8')
+}
 
 const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours'] as const
 type ValidCommands = typeof VALID_COMMANDS[number]
@@ -35,12 +44,14 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
             response = commands.showAndTell(client, commandArguments)
             if (response.success) {
                 showAndTellRequests += 1
+                eventEmitter.emit('countIncrease')
             }
             break
         case '!officehours':
             response = commands.officeHours(client, commandArguments)
             if (response.success) {
                 officeHoursRequests += 1
+                eventEmitter.emit('countIncrease')
             }
             break
     }
@@ -61,12 +72,6 @@ const advertise = () => {
     }
 }
 
-const renderHTMLOverlay = () => {
-    const template = fs.readFileSync('./src/index.template.ejs', 'utf-8')
-    let html = ejs.render(template, { officeHoursRequests, showAndTellRequests });
-    fs.writeFileSync('./dist/index.html', html, 'utf8')
-}
-
 const intervalIds = new Set<NodeJS.Timeout>()
 
 const onConnectedHandler = (address: string, port: number) => {
@@ -78,12 +83,15 @@ const onConnectedHandler = (address: string, port: number) => {
     const advertiseInterval = setInterval(advertise, 1000 * 60)
     intervalIds.add(advertiseInterval)
 
-    const renderHTMLOverlayInterval = setInterval(renderHTMLOverlay, 1000)
-    intervalIds.add(renderHTMLOverlayInterval)
+    eventEmitter.addListener('countIncrease', renderHTMLOverlay);
+}
 
+const onDisconnectedHandler = () => {
+    eventEmitter.removeListener('countIncrease', renderHTMLOverlay);
 }
 
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
+client.on('disconnected', onDisconnectedHandler)
 client.connect();
 

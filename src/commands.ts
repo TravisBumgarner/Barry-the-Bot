@@ -57,7 +57,7 @@ const officeHours = (client: Client, { userState, channel, message }: CommandArg
     }
     client.say(channel, response)
     return {
-        success: true
+        success
     }
 }
 
