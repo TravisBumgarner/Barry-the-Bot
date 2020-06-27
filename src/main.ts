@@ -3,6 +3,9 @@ import config from './config'
 import { sanitizeInput } from './utilities'
 import * as commands from './commands'
 
+const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours'] as const
+type ValidCommands = typeof VALID_COMMANDS[number]
+
 const client = tmi.Client(config)
 
 const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: string, self: boolean) => {
@@ -12,18 +15,23 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
 
     const { command, message } = sanitizeInput(rawInput)
 
-    switch (command) {
-        case null:
-            console.log('No command given.')
-            break
-        case '!hello':
-            const response = commands.hello({ userState, command, message })
-            client.say(channel, response)
-            break
-        default:
-            console.log(`Invalid command ${command} supplied`)
+    if (command === null || command in VALID_COMMANDS) {
+        return null
     }
 
+    let response
+    switch (command as ValidCommands) {
+        case '!hello':
+            response = commands.hello({ userState, command, message })
+            break
+        case '!showandtell':
+            response = commands.showAndTell({ userState, command, message })
+            break
+        case '!officehours':
+            response = commands.officeHours({ userState, command, message })
+            break
+    }
+    client.say(channel, response)
 }
 
 const onConnectedHandler = (address: string, port: number) => {
