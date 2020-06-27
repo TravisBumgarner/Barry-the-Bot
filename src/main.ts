@@ -1,8 +1,8 @@
 import tmi from 'tmi.js'
 import config from './config'
+import { sanitizeInput } from './utilities'
 
 const client = tmi.Client(config)
-
 
 const onMessageHandler = (channel: string, _: any, msg: string, self: boolean) => {
     if (self) {
@@ -17,3 +17,4 @@ const onConnectedHandler = (address: string, port: number) => {
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
 client.connect();
+
