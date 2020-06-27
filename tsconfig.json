@@ -5,7 +5,9 @@
         "target": "es2015",
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "noImplicitAny": true,
+        "strict": true
     },
     "lib": [
         "es2015"

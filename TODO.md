@@ -1,0 +1,13 @@
+- [x] Added TypeScript
+- [x] Connected example to Twitch
+- [ ] Research: what to people use chat bots for?
+  - Display cat gifs from chat commands
+  - Check-in around the world
+  - Get Project Help
+  - Show and Tell
+- [ ] Create `sanitizeInput` function
+- [x] Refactor example for our needs
+- [ ] Add functionality we want
+  - [ ] Show and Tell
+  - [ ] 
+
