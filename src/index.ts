@@ -1,7 +1,13 @@
 import tmi, { ChatUserstate } from 'tmi.js'
+import ejs from 'ejs'
+import fs from 'fs'
+
 import config from './config'
 import { sanitizeInput } from './utilities'
 import * as commands from './commands'
+
+let officeHoursRequests = 0
+let showAndTellRequests = 0
 
 const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours'] as const
 type ValidCommands = typeof VALID_COMMANDS[number]
@@ -20,15 +26,22 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
     }
 
     const commandArguments = { userState, command, message, channel }
+    let response
     switch (command as ValidCommands) {
         case '!hello':
             commands.hello(client, commandArguments)
             break
         case '!showandtell':
-            commands.showAndTell(client, commandArguments)
+            response = commands.showAndTell(client, commandArguments)
+            if (response.success) {
+                showAndTellRequests += 1
+            }
             break
         case '!officehours':
-            commands.officeHours(client, commandArguments)
+            response = commands.officeHours(client, commandArguments)
+            if (response.success) {
+                officeHoursRequests += 1
+            }
             break
     }
 }
@@ -48,9 +61,26 @@ const advertise = () => {
     }
 }
 
+const renderHTMLOverlay = () => {
+    const template = fs.readFileSync('./src/index.template.ejs', 'utf-8')
+    let html = ejs.render(template, { officeHoursRequests, showAndTellRequests });
+    fs.writeFileSync('./dist/index.html', html, 'utf8')
+}
+
+const intervalIds = new Set<NodeJS.Timeout>()
+
 const onConnectedHandler = (address: string, port: number) => {
     console.log(`* Connected to ${address}: ${port} `);
-    setInterval(advertise, 1000 * 60)
+
+    intervalIds.forEach(clearInterval)
+    intervalIds.clear()
+
+    const advertiseInterval = setInterval(advertise, 1000 * 60)
+    intervalIds.add(advertiseInterval)
+
+    const renderHTMLOverlayInterval = setInterval(renderHTMLOverlay, 1000)
+    intervalIds.add(renderHTMLOverlayInterval)
+
 }
 
 client.on('message', onMessageHandler);

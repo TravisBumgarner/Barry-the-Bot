@@ -12,5 +12,7 @@
 - [x] hot reloading
 - [ ] Add functionality we want
   - [ ] Show and Tell
-  - [ ] 
+  - [ ] Office Hours
+- [ ] Figure out how to display show and tell and office hours requests in Streamlabs
+- [ ] Gcloud Setup
 

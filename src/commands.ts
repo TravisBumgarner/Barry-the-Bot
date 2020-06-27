@@ -7,6 +7,10 @@ type CommandArguments = {
     channel: string
 }
 
+type CommandResponse = {
+    success: boolean
+}
+
 type Message = {
     message: string
     username: string
@@ -22,26 +26,39 @@ const hello = (client: Client, { userState, channel }: CommandArguments) => {
     client.say(channel, response)
 }
 
-const showAndTell = (client: Client, { userState, channel, message }: CommandArguments) => {
+const showAndTell = (client: Client, { userState, channel, message }: CommandArguments): CommandResponse => {
     let response: string
+    let success: boolean
     if (message && userState["user-id"] && userState.username) {
         handleMessage({ message, userId: userState["user-id"], username: userState.username })
         response = `Thank you ${userState["display-name"]}! Your show and tell idea has been received.`
+        success = true
     } else {
         response = 'Sorry, there was an issue with your request. Please suply a message along with your command.'
+        success = false
     }
     client.say(channel, response)
+    return {
+        success
+    }
 }
 
-const officeHours = (client: Client, { userState, channel, message }: CommandArguments) => {
+const officeHours = (client: Client, { userState, channel, message }: CommandArguments): CommandResponse => {
     let response: string
+    let success: boolean
+
     if (message && userState["user-id"] && userState.username) {
         handleMessage({ message, userId: userState["user-id"], username: userState.username })
         response = `Thank you ${userState["display-name"]}! Your office hours request has been received.`
+        success = true
     } else {
         response = 'Sorry, there was an issue with your request. Please suply a message along with your command.'
+        success = false
     }
     client.say(channel, response)
+    return {
+        success: true
+    }
 }
 
 export {

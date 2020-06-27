@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .overlay {
+            font-size: 50px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            display: inline-block;
+            padding: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay">
+        Office Hours Requests: <%= officeHoursRequests %>
+        Show and Tell Requests: <%= showAndTellRequests %>
+    </div>
+
+</body>
+
+<script>
+    setInterval(() => location.reload(), 1000)
+</script>
+
+</html>
