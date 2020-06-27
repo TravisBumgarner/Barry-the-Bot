@@ -5,9 +5,11 @@
   - Check-in around the world
   - Get Project Help
   - Show and Tell
-- [ ] Create `sanitizeInput` function
-- [ ] Setup a test library
+- [x] Create `sanitizeInput` function
+- [x] Setup a test library
 - [x] Refactor example for our needs
+- [x] Setup commands files
+- [ ] hot reloading
 - [ ] Add functionality we want
   - [ ] Show and Tell
   - [ ] 

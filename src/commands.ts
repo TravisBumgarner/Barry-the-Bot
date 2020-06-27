@@ -7,7 +7,7 @@ type CommandArguments = {
 }
 
 const hello = ({ userState }: CommandArguments): string => {
-    return `Hello to you too, ${userState["display-name"]}`
+    return `Hello to you too, ${userState["display-name"]} we're hot reloading now. It's the future!`
 }
 
 const showAndTell = ({ userState }: CommandArguments): string => {
