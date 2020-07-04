@@ -16,4 +16,5 @@
 - [x] Figure out how to display show and tell and office hours requests in Streamlabs
 - [ ] ~~Gcloud Setup~~
 - [ ] Store counters in non volatile area
+- [ ] Figure out how to get counts to show up in Streamlabs.
 

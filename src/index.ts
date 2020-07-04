@@ -13,9 +13,14 @@ let officeHoursRequests = 0
 let showAndTellRequests = 0
 
 const renderHTMLOverlay = () => {
+    const outputDir = './dist/'
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
+
     const template = fs.readFileSync('./src/index.template.ejs', 'utf-8')
     let html = ejs.render(template, { officeHoursRequests, showAndTellRequests });
-    fs.writeFileSync('./dist/index.html', html, 'utf8')
+    fs.writeFileSync(`${outputDir}index.html`, html, 'utf8')
 }
 
 const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours'] as const
@@ -76,6 +81,7 @@ const intervalIds = new Set<NodeJS.Timeout>()
 
 const onConnectedHandler = (address: string, port: number) => {
     console.log(`* Connected to ${address}: ${port} `);
+    renderHTMLOverlay()
 
     intervalIds.forEach(clearInterval)
     intervalIds.clear()
