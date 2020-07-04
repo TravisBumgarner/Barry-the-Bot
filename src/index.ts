@@ -23,7 +23,7 @@ const renderHTMLOverlay = () => {
     fs.writeFileSync(`${outputDir}index.html`, html, 'utf8')
 }
 
-const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours'] as const
+const VALID_COMMANDS = ['!hello', '!showandtell', '!officehours', '!help'] as const
 type ValidCommands = typeof VALID_COMMANDS[number]
 
 const client = tmi.Client(config)
@@ -42,6 +42,9 @@ const onMessageHandler = (channel: string, userState: ChatUserstate, rawInput: s
     const commandArguments = { userState, command, message, channel }
     let response
     switch (command as ValidCommands) {
+        case '!help':
+            commands.help(client, commandArguments)
+            break
         case '!hello':
             commands.hello(client, commandArguments)
             break

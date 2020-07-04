@@ -26,43 +26,41 @@ const hello = (client: Client, { userState, channel }: CommandArguments) => {
     client.say(channel, response)
 }
 
-const showAndTell = (client: Client, { userState, channel, message }: CommandArguments): CommandResponse => {
-    let response: string
+const help = (client: Client, { userState, channel }: CommandArguments) => {
+    const response = `Send a direct message to barry_the_bot. If you want to get help with something you're working on, type !officehours followed by a brief summary of your issue. If you want to show something off that you made or found, type !showandtell followed by a brief summary and a link. If there's time we'll discuss on stream!`
+    client.say(channel, response)
+}
+
+const handleRequest = (client: Client, { userState, channel, message }: CommandArguments): CommandResponse => {
+    let response: string = ''
     let success: boolean
-    if (message && userState["user-id"] && userState.username) {
+
+    if (userState["message-type"] === 'chat') {
+        response = 'Please whisper your request to barry_the_bot.'
+        success = false
+    } else if (message && userState["user-id"] && userState.username) {
         handleMessage({ message, userId: userState["user-id"], username: userState.username })
-        response = `Thank you ${userState["display-name"]}! Your show and tell idea has been received.`
+        response = `Thank you ${userState["display-name"]}! Your request has been received.`
         success = true
     } else {
-        response = 'Sorry, there was an issue with your request. Please suply a message along with your command.'
         success = false
     }
-    client.say(channel, response)
+
+    if (userState.username && response.length) {
+        client.say(channel, response)
+    }
+
     return {
         success
     }
 }
 
-const officeHours = (client: Client, { userState, channel, message }: CommandArguments): CommandResponse => {
-    let response: string
-    let success: boolean
-
-    if (message && userState["user-id"] && userState.username) {
-        handleMessage({ message, userId: userState["user-id"], username: userState.username })
-        response = `Thank you ${userState["display-name"]}! Your office hours request has been received.`
-        success = true
-    } else {
-        response = 'Sorry, there was an issue with your request. Please suply a message along with your command.'
-        success = false
-    }
-    client.say(channel, response)
-    return {
-        success
-    }
-}
+const showAndTell = handleRequest
+const officeHours = handleRequest
 
 export {
     hello,
     showAndTell,
-    officeHours
+    officeHours,
+    help
 }
