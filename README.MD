@@ -1,7 +1,1 @@
-# Resources for Learning
-
-- [https://dev.twitch.tv/docs/irc](Official Tutorial)
-- [https://github.com/tmijs/docs/tree/gh-pages/_posts/v1.4.2](tmi.js docs)
-# Setup
-
-- Get `OAUTH_TOKEN`: [https://twitchapps.com/tmi/](here)
+![image](https://user-images.githubusercontent.com/11890057/210198285-a03f63a2-38c2-4e54-a818-b414a5acbc91.png)
